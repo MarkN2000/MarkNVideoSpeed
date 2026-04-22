@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>MarkN Video Speed</title>
@@ -12,50 +12,50 @@
 
   <section class="section speed-section">
     <div class="current-speed">
-      <span class="label">現在速度</span>
+      <span class="label" data-i18n="labelCurrentSpeed">Current speed</span>
       <span id="speed-display" class="speed-value">1.00x</span>
     </div>
     <div class="button-row">
-      <button id="btn-down" class="btn btn-circle" type="button" title="減速">−</button>
-      <button id="btn-toggle" class="btn btn-toggle" type="button" title="1x / 指定速度トグル">→ 2.0x</button>
-      <button id="btn-up" class="btn btn-circle" type="button" title="加速">＋</button>
+      <button id="btn-down" class="btn btn-circle" type="button" data-i18n-title="btnTitleSlowDown" title="Slow down">−</button>
+      <button id="btn-toggle" class="btn btn-toggle" type="button" data-i18n-title="btnTitleToggle" title="Toggle 1x / target speed">→ 2.0x</button>
+      <button id="btn-up" class="btn btn-circle" type="button" data-i18n-title="btnTitleSpeedUp" title="Speed up">＋</button>
     </div>
   </section>
 
   <section class="section">
-    <h2 class="section-title">設定</h2>
+    <h2 class="section-title" data-i18n="sectionSettings">Settings</h2>
     <div class="field">
-      <label class="field-label" for="step-input">ステップ値</label>
+      <label class="field-label" for="step-input" data-i18n="labelStep">Step</label>
       <input id="step-input" class="field-input" type="number" min="0.01" max="2" step="0.01">
     </div>
     <div class="field">
-      <label class="field-label" for="preset-input">指定速度</label>
-      <input id="preset-input" class="field-input" type="number" min="0.1" max="16" step="0.1">
+      <label class="field-label" for="target-input" data-i18n="labelTargetSpeed">Target speed</label>
+      <input id="target-input" class="field-input" type="number" min="0.1" max="16" step="0.1">
     </div>
   </section>
 
   <section class="section">
-    <h2 class="section-title">ショートカットキー</h2>
+    <h2 class="section-title" data-i18n="sectionShortcuts">Shortcuts</h2>
     <div class="field">
-      <label class="field-label">減速 (Down)</label>
+      <label class="field-label" data-i18n="labelKeyDown">Slow down</label>
       <button id="key-down" class="key-button" type="button" data-action="down">S</button>
     </div>
     <div class="field">
-      <label class="field-label">加速 (Up)</label>
+      <label class="field-label" data-i18n="labelKeyUp">Speed up</label>
       <button id="key-up" class="key-button" type="button" data-action="up">D</button>
     </div>
     <div class="field">
-      <label class="field-label">トグル</label>
+      <label class="field-label" data-i18n="labelKeyToggle">Toggle</label>
       <button id="key-toggle" class="key-button" type="button" data-action="toggle">G</button>
     </div>
-    <button id="reset-keys" class="btn btn-text" type="button">デフォルトに戻す</button>
+    <button id="reset-keys" class="btn btn-text" type="button" data-i18n="btnResetKeys">Reset to defaults</button>
   </section>
 
   <section class="section domain-section">
-    <h2 class="section-title">現在のサイト</h2>
+    <h2 class="section-title" data-i18n="sectionCurrentSite">Current site</h2>
     <div id="current-domain" class="current-domain">—</div>
     <button id="toggle-exclude" class="btn btn-wide" type="button" disabled>—</button>
-    <p id="domain-hint" class="hint hidden">変更後はページを再読み込みしてください</p>
+    <p id="domain-hint" class="hint hidden" data-i18n="hintReload">Reload the page after changing</p>
   </section>
 
   <footer class="footer">

@@ -3,13 +3,31 @@
 
   const { storage, actions, domainFilter } = window.__MNVS__;
 
+  function t(key, substitutions) {
+    return chrome.i18n.getMessage(key, substitutions);
+  }
+
+  function applyI18n() {
+    const lang = chrome.i18n.getUILanguage();
+    if (lang) document.documentElement.lang = lang.split('-')[0];
+    document.title = t('extName') || document.title;
+    document.querySelectorAll('[data-i18n]').forEach((node) => {
+      const msg = t(node.getAttribute('data-i18n'));
+      if (msg) node.textContent = msg;
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach((node) => {
+      const msg = t(node.getAttribute('data-i18n-title'));
+      if (msg) node.setAttribute('title', msg);
+    });
+  }
+
   const el = {
     speedDisplay: document.getElementById('speed-display'),
     btnDown: document.getElementById('btn-down'),
     btnToggle: document.getElementById('btn-toggle'),
     btnUp: document.getElementById('btn-up'),
     stepInput: document.getElementById('step-input'),
-    presetInput: document.getElementById('preset-input'),
+    targetInput: document.getElementById('target-input'),
     keyButtons: {
       down: document.getElementById('key-down'),
       up: document.getElementById('key-up'),
@@ -57,22 +75,22 @@
     return `${actions.normalize(s).toFixed(2)}x`;
   }
 
-  function formatToggleTarget(current, preset) {
-    const target = actions.normalize(current) === actions.NORMAL_SPEED
-      ? actions.normalize(preset)
+  function formatToggleTarget(current, target) {
+    const next = actions.normalize(current) === actions.NORMAL_SPEED
+      ? actions.normalize(target)
       : actions.NORMAL_SPEED;
-    return `→ ${target.toFixed(2)}x`;
+    return `→ ${next.toFixed(2)}x`;
   }
 
   function render() {
     el.speedDisplay.textContent = formatSpeed(settings.lastSpeed);
-    el.btnToggle.textContent = formatToggleTarget(settings.lastSpeed, settings.togglePresetSpeed);
+    el.btnToggle.textContent = formatToggleTarget(settings.lastSpeed, settings.toggleTargetSpeed);
 
     if (document.activeElement !== el.stepInput) {
       el.stepInput.value = settings.step;
     }
-    if (document.activeElement !== el.presetInput) {
-      el.presetInput.value = settings.togglePresetSpeed;
+    if (document.activeElement !== el.targetInput) {
+      el.targetInput.value = settings.toggleTargetSpeed;
     }
 
     for (const action of ['down', 'up', 'toggle']) {
@@ -93,7 +111,7 @@
     }
     el.toggleExclude.disabled = false;
     const excluded = domainFilter.isExcluded(currentHostname, settings.excludedDomains);
-    el.toggleExclude.textContent = excluded ? '除外を解除する' : 'このドメインを除外する';
+    el.toggleExclude.textContent = excluded ? t('btnExcludeRemove') : t('btnExcludeAdd');
   }
 
   async function handleAction(action) {
@@ -113,10 +131,10 @@
     return Math.round(n * 100) / 100;
   }
 
-  function validatePresetInput(inputEl) {
+  function validateTargetInput(inputEl) {
     const v = validateNumberInput(inputEl, 0.1, 16.0);
     if (v === null) return null;
-    if (actions.isPresetForbidden(v)) return null;
+    if (actions.isTargetForbidden(v)) return null;
     return v;
   }
 
@@ -135,18 +153,18 @@
     }
   }
 
-  async function commitPreset() {
-    const v = validatePresetInput(el.presetInput);
+  async function commitTarget() {
+    const v = validateTargetInput(el.targetInput);
     if (v === null) {
-      el.presetInput.classList.add('invalid');
-      el.presetInput.value = settings.togglePresetSpeed;
-      setTimeout(() => el.presetInput.classList.remove('invalid'), 1000);
+      el.targetInput.classList.add('invalid');
+      el.targetInput.value = settings.toggleTargetSpeed;
+      setTimeout(() => el.targetInput.classList.remove('invalid'), 1000);
       return;
     }
-    el.presetInput.classList.remove('invalid');
-    if (v !== settings.togglePresetSpeed) {
-      settings.togglePresetSpeed = v;
-      await storage.set({ togglePresetSpeed: v });
+    el.targetInput.classList.remove('invalid');
+    if (v !== settings.toggleTargetSpeed) {
+      settings.toggleTargetSpeed = v;
+      await storage.set({ toggleTargetSpeed: v });
     }
   }
 
@@ -164,7 +182,7 @@
     cancelRebind();
     keyRebindAction = action;
     const btn = el.keyButtons[action];
-    btn.textContent = 'キーを押してください...';
+    btn.textContent = t('keyRebindPrompt');
     btn.classList.add('waiting');
     document.addEventListener('keydown', onRebindKeydown, true);
     rebindButton = btn;
@@ -195,12 +213,12 @@
     }
 
     if (event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) {
-      showToast('修飾キーは使用できません');
+      showToast(t('errModifierKey'));
       return;
     }
 
     if (!isAllowedKeyCode(event.code)) {
-      showToast('英数字キーのみ使用できます');
+      showToast(t('errAlphanumOnly'));
       return;
     }
 
@@ -208,7 +226,7 @@
     const otherActions = ['down', 'up', 'toggle'].filter((a) => a !== action);
     for (const other of otherActions) {
       if (settings.keyBindings[other] === event.code) {
-        showToast(`${codeToLabel(event.code)} は ${otherLabel(other)} で使用中です`);
+        showToast(t('errKeyInUse', [codeToLabel(event.code), otherLabel(other)]));
         return;
       }
     }
@@ -221,7 +239,9 @@
   }
 
   function otherLabel(action) {
-    return action === 'down' ? '減速' : action === 'up' ? '加速' : 'トグル';
+    if (action === 'down') return t('actionDown');
+    if (action === 'up') return t('actionUp');
+    return t('actionToggle');
   }
 
   async function resetKeyBindings() {
@@ -229,7 +249,7 @@
     settings.keyBindings = { ...defaults };
     render();
     await storage.set({ keyBindings: { ...defaults } });
-    showToast('ショートカットをリセットしました');
+    showToast(t('toastResetDone'));
   }
 
   async function toggleExclude() {
@@ -256,13 +276,13 @@
       if (scheme === 'file') {
         currentHostname = null;
         hostSupported = false;
-        el.currentDomain.textContent = 'ローカルファイル（file://）';
+        el.currentDomain.textContent = t('hostLocalFile');
         return;
       }
       if (scheme !== 'http' && scheme !== 'https') {
         currentHostname = null;
         hostSupported = false;
-        el.currentDomain.textContent = 'このページでは設定できません';
+        el.currentDomain.textContent = t('hostUnsupported');
         return;
       }
       currentHostname = url.hostname;
@@ -272,7 +292,7 @@
       console.warn('[MNVS popup] tab resolve failed', err);
       currentHostname = null;
       hostSupported = false;
-      el.currentDomain.textContent = '取得できませんでした';
+      el.currentDomain.textContent = t('hostFetchFailed');
     }
   }
 
@@ -283,8 +303,8 @@
 
     el.stepInput.addEventListener('change', commitStep);
     el.stepInput.addEventListener('blur', commitStep);
-    el.presetInput.addEventListener('change', commitPreset);
-    el.presetInput.addEventListener('blur', commitPreset);
+    el.targetInput.addEventListener('change', commitTarget);
+    el.targetInput.addEventListener('blur', commitTarget);
 
     for (const action of ['down', 'up', 'toggle']) {
       el.keyButtons[action].addEventListener('click', () => startRebind(action));
@@ -295,12 +315,13 @@
   }
 
   async function init() {
+    applyI18n();
     settings = await storage.getAll();
-    if (actions.isPresetForbidden(settings.togglePresetSpeed)) {
+    if (actions.isTargetForbidden(settings.toggleTargetSpeed)) {
       console.warn(
-        '[MNVS popup] togglePresetSpeed is in the forbidden zone [0.9, 1.1]. ' +
+        '[MNVS popup] toggleTargetSpeed is in the forbidden zone [0.9, 1.1]. ' +
           'Please update it to a value outside this range.',
-        settings.togglePresetSpeed
+        settings.toggleTargetSpeed
       );
     }
     await resolveCurrentHost();

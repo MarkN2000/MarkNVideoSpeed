@@ -14,11 +14,11 @@
   async function init() {
     settings = await ns.storage.getAll();
 
-    if (ns.actions.isPresetForbidden(settings.togglePresetSpeed)) {
+    if (ns.actions.isTargetForbidden(settings.toggleTargetSpeed)) {
       console.warn(
-        '[MNVS] togglePresetSpeed is in the forbidden zone [0.9, 1.1]. ' +
+        '[MNVS] toggleTargetSpeed is in the forbidden zone [0.9, 1.1]. ' +
           'Update it in the popup to avoid toggle no-op.',
-        settings.togglePresetSpeed
+        settings.toggleTargetSpeed
       );
     }
 

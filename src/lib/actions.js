@@ -24,51 +24,51 @@
     return round2(clamp(v));
   }
 
-  function isPresetForbidden(v) {
+  function isTargetForbidden(v) {
     const n = normalize(v);
     return n >= FORBIDDEN_MIN && n <= FORBIDDEN_MAX;
   }
 
-  function down(current, preset, step) {
-    const normalizedPreset = normalize(preset);
+  function down(current, target, step) {
+    const normalizedTarget = normalize(target);
     const newCurrent = normalize(normalize(current) - normalize(step));
-    const newPreset = isPresetForbidden(newCurrent) ? normalizedPreset : newCurrent;
-    return { current: newCurrent, preset: newPreset };
+    const newTarget = isTargetForbidden(newCurrent) ? normalizedTarget : newCurrent;
+    return { current: newCurrent, target: newTarget };
   }
 
-  function up(current, preset, step) {
-    const normalizedPreset = normalize(preset);
+  function up(current, target, step) {
+    const normalizedTarget = normalize(target);
     const newCurrent = normalize(normalize(current) + normalize(step));
-    const newPreset = isPresetForbidden(newCurrent) ? normalizedPreset : newCurrent;
-    return { current: newCurrent, preset: newPreset };
+    const newTarget = isTargetForbidden(newCurrent) ? normalizedTarget : newCurrent;
+    return { current: newCurrent, target: newTarget };
   }
 
-  function toggle(current, preset) {
+  function toggle(current, target) {
     return normalize(current) === NORMAL_SPEED
-      ? normalize(preset)
+      ? normalize(target)
       : NORMAL_SPEED;
   }
 
   function applyAction(settings, action) {
-    const { lastSpeed, togglePresetSpeed, step } = settings;
+    const { lastSpeed, toggleTargetSpeed, step } = settings;
     const patch = {};
 
     if (action === 'toggle') {
-      const newCurrent = toggle(lastSpeed, togglePresetSpeed);
+      const newCurrent = toggle(lastSpeed, toggleTargetSpeed);
       if (newCurrent !== normalize(lastSpeed)) patch.lastSpeed = newCurrent;
       return patch;
     }
 
     if (action === 'down' || action === 'up') {
       const fn = action === 'down' ? down : up;
-      const { current: newCurrent, preset: newPreset } = fn(
+      const { current: newCurrent, target: newTarget } = fn(
         lastSpeed,
-        togglePresetSpeed,
+        toggleTargetSpeed,
         step
       );
       if (newCurrent !== normalize(lastSpeed)) patch.lastSpeed = newCurrent;
-      if (newPreset !== normalize(togglePresetSpeed)) {
-        patch.togglePresetSpeed = newPreset;
+      if (newTarget !== normalize(toggleTargetSpeed)) {
+        patch.toggleTargetSpeed = newTarget;
       }
       return patch;
     }
@@ -83,7 +83,7 @@
     FORBIDDEN_MIN,
     FORBIDDEN_MAX,
     normalize,
-    isPresetForbidden,
+    isTargetForbidden,
     down,
     up,
     toggle,

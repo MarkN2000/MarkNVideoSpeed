@@ -1,0 +1,93 @@
+{
+  "extName": {
+    "message": "MarkN Video Speed"
+  },
+  "extDescription": {
+    "message": "HTML5 video/audio の再生速度をキーボードショートカットとポップアップで操作するシンプルな拡張機能"
+  },
+  "labelCurrentSpeed": {
+    "message": "現在速度"
+  },
+  "labelStep": {
+    "message": "ステップ値"
+  },
+  "labelTargetSpeed": {
+    "message": "指定速度"
+  },
+  "sectionSettings": {
+    "message": "設定"
+  },
+  "sectionShortcuts": {
+    "message": "ショートカットキー"
+  },
+  "sectionCurrentSite": {
+    "message": "現在のサイト"
+  },
+  "btnResetKeys": {
+    "message": "デフォルトに戻す"
+  },
+  "btnExcludeAdd": {
+    "message": "このドメインを除外する"
+  },
+  "btnExcludeRemove": {
+    "message": "除外を解除する"
+  },
+  "btnTitleSlowDown": {
+    "message": "減速"
+  },
+  "btnTitleSpeedUp": {
+    "message": "加速"
+  },
+  "btnTitleToggle": {
+    "message": "1x / 指定速度トグル"
+  },
+  "labelKeyDown": {
+    "message": "減速 (Down)"
+  },
+  "labelKeyUp": {
+    "message": "加速 (Up)"
+  },
+  "labelKeyToggle": {
+    "message": "トグル"
+  },
+  "actionDown": {
+    "message": "減速"
+  },
+  "actionUp": {
+    "message": "加速"
+  },
+  "actionToggle": {
+    "message": "トグル"
+  },
+  "toastResetDone": {
+    "message": "ショートカットをリセットしました"
+  },
+  "errModifierKey": {
+    "message": "修飾キーは使用できません"
+  },
+  "errAlphanumOnly": {
+    "message": "英数字キーのみ使用できます"
+  },
+  "errKeyInUse": {
+    "message": "$KEY$ は $ACTION$ で使用中です",
+    "placeholders": {
+      "key": { "content": "$1", "example": "Q" },
+      "action": { "content": "$2", "example": "トグル" }
+    }
+  },
+  "keyRebindPrompt": {
+    "message": "キーを押してください..."
+  },
+  "hostLocalFile": {
+    "message": "ローカルファイル（file://）"
+  },
+  "hostUnsupported": {
+    "message": "このページでは設定できません"
+  },
+  "hostFetchFailed": {
+    "message": "取得できませんでした"
+  },
+  "hintReload": {
+    "message": "変更後はページを再読み込みしてください"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "extName": {
+    "message": "MarkN Video Speed"
+  },
+  "extDescription": {
+    "message": "A simple extension to control HTML5 video/audio playback speed via keyboard shortcuts and a popup."
+  },
+  "labelCurrentSpeed": {
+    "message": "Current speed"
+  },
+  "labelStep": {
+    "message": "Step"
+  },
+  "labelTargetSpeed": {
+    "message": "Target speed"
+  },
+  "sectionSettings": {
+    "message": "Settings"
+  },
+  "sectionShortcuts": {
+    "message": "Shortcuts"
+  },
+  "sectionCurrentSite": {
+    "message": "Current site"
+  },
+  "btnResetKeys": {
+    "message": "Reset to defaults"
+  },
+  "btnExcludeAdd": {
+    "message": "Exclude this domain"
+  },
+  "btnExcludeRemove": {
+    "message": "Remove exclusion"
+  },
+  "btnTitleSlowDown": {
+    "message": "Slow down"
+  },
+  "btnTitleSpeedUp": {
+    "message": "Speed up"
+  },
+  "btnTitleToggle": {
+    "message": "Toggle 1x / target speed"
+  },
+  "labelKeyDown": {
+    "message": "Slow down"
+  },
+  "labelKeyUp": {
+    "message": "Speed up"
+  },
+  "labelKeyToggle": {
+    "message": "Toggle"
+  },
+  "actionDown": {
+    "message": "Slow down"
+  },
+  "actionUp": {
+    "message": "Speed up"
+  },
+  "actionToggle": {
+    "message": "Toggle"
+  },
+  "toastResetDone": {
+    "message": "Shortcuts reset to defaults"
+  },
+  "errModifierKey": {
+    "message": "Modifier keys are not allowed"
+  },
+  "errAlphanumOnly": {
+    "message": "Only alphanumeric keys are allowed"
+  },
+  "errKeyInUse": {
+    "message": "$KEY$ is already used by $ACTION$",
+    "placeholders": {
+      "key": { "content": "$1", "example": "Q" },
+      "action": { "content": "$2", "example": "Toggle" }
+    }
+  },
+  "keyRebindPrompt": {
+    "message": "Press a key..."
+  },
+  "hostLocalFile": {
+    "message": "Local file (file://)"
+  },
+  "hostUnsupported": {
+    "message": "Not available on this page"
+  },
+  "hostFetchFailed": {
+    "message": "Could not fetch"
+  },
+  "hintReload": {
+    "message": "Reload the page after changing"
+  }
+}

@@ -6,7 +6,7 @@
   const DEFAULTS = Object.freeze({
     lastSpeed: 1.0,
     step: 0.1,
-    togglePresetSpeed: 2.0,
+    toggleTargetSpeed: 2.0,
     keyBindings: Object.freeze({ down: 'KeyS', up: 'KeyD', toggle: 'KeyG' }),
     excludedDomains: Object.freeze(['meet.google.com', 'hangouts.google.com']),
   });
@@ -16,7 +16,7 @@
   const VALIDATORS = {
     lastSpeed: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
     step: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
-    togglePresetSpeed: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
+    toggleTargetSpeed: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
     keyBindings: (v) => {
       if (!v || typeof v !== 'object') return false;
       return ['down', 'up', 'toggle'].every(
