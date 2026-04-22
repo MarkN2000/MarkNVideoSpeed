@@ -24,6 +24,11 @@
       "matches": ["http://*/*", "https://*/*", "file:///*"],
       "js": [
         "src/lib/storage.js",
+        "src/lib/actions.js",
+        "src/lib/domainFilter.js",
+        "src/lib/speedApplier.js",
+        "src/lib/mediaRegistry.js",
+        "src/lib/keyHandler.js",
         "src/content/content.js"
       ],
       "run_at": "document_idle",

@@ -1,2 +1,15 @@
 agent/
 .claude/
+
+# Chrome extension packaging
+*.pem
+*.crx
+*.zip
+
+# OS (Windows)
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
