@@ -14,6 +14,14 @@
   async function init() {
     settings = await ns.storage.getAll();
 
+    if (ns.actions.isPresetForbidden(settings.togglePresetSpeed)) {
+      console.warn(
+        '[MNVS] togglePresetSpeed is in the forbidden zone [0.9, 1.1]. ' +
+          'Update it in the popup to avoid toggle no-op.',
+        settings.togglePresetSpeed
+      );
+    }
+
     if (ns.domainFilter.isExcluded(location.hostname, settings.excludedDomains)) {
       console.log('[MNVS] disabled on excluded domain:', location.hostname);
       return;
@@ -23,18 +31,14 @@
     registry.start();
 
     function executeAction(action) {
-      const { lastSpeed, step, togglePresetSpeed } = settings;
-      const newSpeed =
-        action === 'down' ? ns.actions.down(lastSpeed, step)
-        : action === 'up' ? ns.actions.up(lastSpeed, step)
-        : action === 'toggle' ? ns.actions.toggle(lastSpeed, togglePresetSpeed)
-        : lastSpeed;
+      const patch = ns.actions.applyAction(settings, action);
+      if (Object.keys(patch).length === 0) return;
 
-      if (newSpeed === lastSpeed) return;
-
-      settings.lastSpeed = newSpeed;
-      ns.speedApplier.applyTo(registry.getAll(), newSpeed);
-      ns.storage.set({ lastSpeed: newSpeed }).catch((err) => {
+      Object.assign(settings, patch);
+      if ('lastSpeed' in patch) {
+        ns.speedApplier.applyTo(registry.getAll(), patch.lastSpeed);
+      }
+      ns.storage.set(patch).catch((err) => {
         console.warn('[MNVS] persist failed', err);
       });
     }

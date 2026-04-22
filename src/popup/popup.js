@@ -97,17 +97,12 @@
   }
 
   async function handleAction(action) {
-    const { lastSpeed, step, togglePresetSpeed } = settings;
-    const newSpeed =
-      action === 'down' ? actions.down(lastSpeed, step)
-      : action === 'up' ? actions.up(lastSpeed, step)
-      : actions.toggle(lastSpeed, togglePresetSpeed);
+    const patch = actions.applyAction(settings, action);
+    if (Object.keys(patch).length === 0) return;
 
-    if (newSpeed === lastSpeed) return;
-
-    settings.lastSpeed = newSpeed;
+    Object.assign(settings, patch);
     render();
-    await storage.set({ lastSpeed: newSpeed });
+    await storage.set(patch);
   }
 
   function validateNumberInput(inputEl, min, max) {
@@ -116,6 +111,13 @@
     const n = parseFloat(raw);
     if (!Number.isFinite(n) || n < min || n > max) return null;
     return Math.round(n * 100) / 100;
+  }
+
+  function validatePresetInput(inputEl) {
+    const v = validateNumberInput(inputEl, 0.1, 16.0);
+    if (v === null) return null;
+    if (actions.isPresetForbidden(v)) return null;
+    return v;
   }
 
   async function commitStep() {
@@ -134,7 +136,7 @@
   }
 
   async function commitPreset() {
-    const v = validateNumberInput(el.presetInput, 0.1, 16.0);
+    const v = validatePresetInput(el.presetInput);
     if (v === null) {
       el.presetInput.classList.add('invalid');
       el.presetInput.value = settings.togglePresetSpeed;
@@ -145,7 +147,6 @@
     if (v !== settings.togglePresetSpeed) {
       settings.togglePresetSpeed = v;
       await storage.set({ togglePresetSpeed: v });
-      render();
     }
   }
 
@@ -295,6 +296,13 @@
 
   async function init() {
     settings = await storage.getAll();
+    if (actions.isPresetForbidden(settings.togglePresetSpeed)) {
+      console.warn(
+        '[MNVS popup] togglePresetSpeed is in the forbidden zone [0.9, 1.1]. ' +
+          'Please update it to a value outside this range.',
+        settings.togglePresetSpeed
+      );
+    }
     await resolveCurrentHost();
     render();
     bindEvents();
