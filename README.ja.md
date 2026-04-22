@@ -1,5 +1,7 @@
 # MarkN Video Speed
 
+[English](./README.md) | **日本語**
+
 HTML5 `<video>` / `<audio>` の再生速度をキーボードショートカットとポップアップから操作する、シンプルな Chrome 拡張機能。
 
 ## 特徴
@@ -138,8 +140,7 @@ MarkNVideoSpeed/
 │   ├── en/messages.json                 既定ロケール（英語）
 │   └── ja/messages.json                 日本語ロケール
 ├── assets/icons/                        16 / 32 / 48 / 128 PNG
-├── .github/workflows/release.yml        `v*` タグ push で ZIP を作成し Releases に公開
-└── agent/要件定義.md                    要件定義書（`.gitignore` 済みのローカル設計ドキュメント）
+└── .github/workflows/release.yml        `v*` タグ push で ZIP を作成し Releases に公開
 ```
 
 - **ビルドレス**: Node / npm は使わない。素の JS / HTML / CSS のみ。
