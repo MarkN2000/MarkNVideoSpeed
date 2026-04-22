@@ -22,8 +22,6 @@
     const registry = ns.mediaRegistry.createRegistry(() => settings.lastSpeed);
     registry.start();
 
-    ns.speedApplier.applyTo(registry.getAll(), settings.lastSpeed);
-
     function executeAction(action) {
       const { lastSpeed, step, togglePresetSpeed } = settings;
       const newSpeed =

@@ -13,6 +13,20 @@
 
   const KNOWN_KEYS = Object.keys(DEFAULTS);
 
+  const VALIDATORS = {
+    lastSpeed: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
+    step: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
+    togglePresetSpeed: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
+    keyBindings: (v) => {
+      if (!v || typeof v !== 'object') return false;
+      return ['down', 'up', 'toggle'].every(
+        (k) => typeof v[k] === 'string' && v[k].length > 0
+      );
+    },
+    excludedDomains: (v) =>
+      Array.isArray(v) && v.every((x) => typeof x === 'string'),
+  };
+
   function cloneDefault(key) {
     const v = DEFAULTS[key];
     if (Array.isArray(v)) return [...v];
@@ -23,6 +37,15 @@
   function assertKnownKey(key) {
     if (!KNOWN_KEYS.includes(key)) {
       throw new Error(`[MNVS] unknown storage key: ${key}`);
+    }
+  }
+
+  function assertValidValue(key, value) {
+    const validator = VALIDATORS[key];
+    if (!validator(value)) {
+      throw new Error(
+        `[MNVS] invalid value for ${key}: ${JSON.stringify(value)}`
+      );
     }
   }
 
@@ -42,7 +65,10 @@
   }
 
   async function set(patch) {
-    for (const key of Object.keys(patch)) assertKnownKey(key);
+    for (const [key, value] of Object.entries(patch)) {
+      assertKnownKey(key);
+      assertValidValue(key, value);
+    }
     await chrome.storage.local.set(patch);
   }
 

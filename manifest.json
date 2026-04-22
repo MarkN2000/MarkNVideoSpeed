@@ -6,6 +6,7 @@
   "permissions": ["storage", "activeTab"],
   "action": {
     "default_title": "MarkN Video Speed",
+    "default_popup": "src/popup/popup.html",
     "default_icon": {
       "16": "assets/icons/icon16.png",
       "32": "assets/icons/icon32.png",

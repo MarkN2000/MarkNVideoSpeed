@@ -8,6 +8,10 @@
     const tag = target.nodeName;
     if (tag === 'INPUT' || tag === 'TEXTAREA') return true;
     if (target.isContentEditable === true) return true;
+    if (typeof target.getAttribute === 'function') {
+      const role = target.getAttribute('role');
+      if (role === 'textbox' || role === 'searchbox') return true;
+    }
     return false;
   }
 
