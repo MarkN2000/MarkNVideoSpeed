@@ -3,7 +3,7 @@
     "message": "MarkN Video Speed"
   },
   "extDescription": {
-    "message": "A simple extension to control HTML5 video/audio playback speed via keyboard shortcuts and a popup."
+    "message": "Change video and podcast speed with one keypress. Three buttons, big on-screen readout, zero tracking. YouTube, Netflix, and beyond."
   },
   "labelCurrentSpeed": {
     "message": "Current speed"

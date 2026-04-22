@@ -3,7 +3,7 @@
     "message": "MarkN Video Speed"
   },
   "extDescription": {
-    "message": "HTML5 video/audio の再生速度をキーボードショートカットとポップアップで操作するシンプルな拡張機能"
+    "message": "動画もポッドキャストも、キー1つで速度チェンジ。3ボタンだけのシンプル操作、画面中央に大きな速度表示、トラッキング一切なし。"
   },
   "labelCurrentSpeed": {
     "message": "現在速度"
