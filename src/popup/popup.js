@@ -61,7 +61,7 @@
     const target = actions.normalize(current) === actions.NORMAL_SPEED
       ? actions.normalize(preset)
       : actions.NORMAL_SPEED;
-    return `→ ${target.toFixed(1)}x`;
+    return `→ ${target.toFixed(2)}x`;
   }
 
   function render() {

@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Build and publish release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create distribution zip
+        run: |
+          DIST_NAME="MarkNVideoSpeed-${GITHUB_REF_NAME}"
+          mkdir "${DIST_NAME}"
+          cp -r manifest.json src assets README.md LICENSE "${DIST_NAME}/"
+          zip -r "${DIST_NAME}.zip" "${DIST_NAME}"
+          echo "ZIP_NAME=${DIST_NAME}.zip" >> "$GITHUB_ENV"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.ZIP_NAME }}
+          name: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
