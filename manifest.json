@@ -30,6 +30,7 @@
         "src/lib/speedApplier.js",
         "src/lib/mediaRegistry.js",
         "src/lib/keyHandler.js",
+        "src/lib/hud.js",
         "src/content/content.js"
       ],
       "run_at": "document_idle",

@@ -2,7 +2,7 @@
   'use strict';
 
   const ns = window.__MNVS__;
-  const required = ['storage', 'actions', 'domainFilter', 'speedApplier', 'mediaRegistry', 'keyHandler'];
+  const required = ['storage', 'actions', 'domainFilter', 'speedApplier', 'mediaRegistry', 'keyHandler', 'hud'];
   const missing = required.filter((k) => !ns || !ns[k]);
   if (missing.length > 0) {
     console.error('[MNVS] required modules missing:', missing);
@@ -30,6 +30,8 @@
     const registry = ns.mediaRegistry.createRegistry(() => settings.lastSpeed);
     registry.start();
 
+    const hud = ns.hud.createHUD();
+
     function executeAction(action) {
       const patch = ns.actions.applyAction(settings, action);
       if (Object.keys(patch).length === 0) return;
@@ -37,6 +39,7 @@
       Object.assign(settings, patch);
       if ('lastSpeed' in patch) {
         ns.speedApplier.applyTo(registry.getAll(), patch.lastSpeed);
+        hud.show(patch.lastSpeed);
       }
       ns.storage.set(patch).catch((err) => {
         console.warn('[MNVS] persist failed', err);
