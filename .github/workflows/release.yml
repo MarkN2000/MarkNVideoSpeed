@@ -17,11 +17,9 @@ jobs:
 
       - name: Create distribution zip
         run: |
-          DIST_NAME="MarkNVideoSpeed-${GITHUB_REF_NAME}"
-          mkdir "${DIST_NAME}"
-          cp -r manifest.json src assets README.md LICENSE "${DIST_NAME}/"
-          zip -r "${DIST_NAME}.zip" "${DIST_NAME}"
-          echo "ZIP_NAME=${DIST_NAME}.zip" >> "$GITHUB_ENV"
+          ZIP_NAME="MarkNVideoSpeed-${GITHUB_REF_NAME}.zip"
+          zip -r "${ZIP_NAME}" manifest.json src assets _locales LICENSE
+          echo "ZIP_NAME=${ZIP_NAME}" >> "$GITHUB_ENV"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

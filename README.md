@@ -22,7 +22,7 @@ A minimal Chrome extension for controlling HTML5 `<video>` / `<audio>` playback 
 ### Option A: Install from a released ZIP (recommended)
 
 1. Download the latest `MarkNVideoSpeed-vX.Y.Z.zip` from the [Releases page](../../releases)
-2. Extract the ZIP to any folder
+2. Extract the ZIP into a new empty folder
 3. Open `chrome://extensions/` in Chrome
 4. Turn on **Developer mode** (top right)
 5. Click **Load unpacked** and select the extracted folder

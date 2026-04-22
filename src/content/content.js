@@ -23,7 +23,6 @@
     }
 
     if (ns.domainFilter.isExcluded(location.hostname, settings.excludedDomains)) {
-      console.log('[MNVS] disabled on excluded domain:', location.hostname);
       return;
     }
 
@@ -60,12 +59,6 @@
       if (changes.lastSpeed) {
         ns.speedApplier.applyTo(registry.getAll(), changes.lastSpeed.newValue);
       }
-    });
-
-    console.log('[MNVS] initialized', {
-      host: location.hostname,
-      mediaCount: registry.getAll().length,
-      lastSpeed: settings.lastSpeed,
     });
   }
 
