@@ -6,6 +6,12 @@ agent/
 *.crx
 *.zip
 
+# web-ext build artifacts
+web-ext-artifacts/
+
+# Crash dumps
+*.stackdump
+
 # OS (Windows)
 Thumbs.db
 desktop.ini
