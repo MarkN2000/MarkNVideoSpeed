@@ -7,7 +7,7 @@
     lastSpeed: 1.0,
     step: 0.1,
     toggleTargetSpeed: 2.0,
-    keyBindings: Object.freeze({ down: 'KeyS', up: 'KeyD', toggle: 'KeyG' }),
+    keyBindings: Object.freeze({ down: 'KeyS', up: 'KeyD', toggle: 'KeyR' }),
     excludedDomains: Object.freeze(['meet.google.com', 'hangouts.google.com']),
   });
 

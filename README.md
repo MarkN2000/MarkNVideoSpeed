@@ -41,7 +41,7 @@ A minimal Chrome extension for controlling HTML5 `<video>` / `<audio>` playback 
 | --- | ------ |
 | `S` | Decrease speed (by the step value) |
 | `D` | Increase speed (by the step value) |
-| `G` | Toggle between 1.0x and the target speed |
+| `R` | Toggle between 1.0x and the target speed |
 
 - Shortcuts fire **only when a `<video>` or `<audio>` element exists on the page**
 - Shortcuts do not fire while a text input is focused (so you can still type freely)
@@ -59,7 +59,7 @@ Click the extension icon in the toolbar to open.
   - Only **A–Z and 0–9** are accepted. Keys with modifiers (Ctrl / Alt / Shift / Meta) and symbols are rejected
   - A key already assigned to another action is rejected
   - Press `Esc` or move focus away from the button to cancel
-- **Reset to defaults**: Restore all three shortcuts at once (`S` / `D` / `G`)
+- **Reset to defaults**: Restore all three shortcuts at once (`S` / `D` / `R`)
 - **Current site**: Add or remove the current domain to/from the exclusion list (reload the page for the change to take effect)
 
 ### On-screen speed display (HUD)
