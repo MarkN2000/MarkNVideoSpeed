@@ -27,7 +27,6 @@
     btnToggle: document.getElementById('btn-toggle'),
     btnUp: document.getElementById('btn-up'),
     stepInput: document.getElementById('step-input'),
-    targetInput: document.getElementById('target-input'),
     keyButtons: {
       down: document.getElementById('key-down'),
       up: document.getElementById('key-up'),
@@ -89,9 +88,6 @@
     if (document.activeElement !== el.stepInput) {
       el.stepInput.value = settings.step;
     }
-    if (document.activeElement !== el.targetInput) {
-      el.targetInput.value = settings.toggleTargetSpeed;
-    }
 
     for (const action of ['down', 'up', 'toggle']) {
       const btn = el.keyButtons[action];
@@ -131,13 +127,6 @@
     return Math.round(n * 100) / 100;
   }
 
-  function validateTargetInput(inputEl) {
-    const v = validateNumberInput(inputEl, 0.1, 16.0);
-    if (v === null) return null;
-    if (actions.isTargetForbidden(v)) return null;
-    return v;
-  }
-
   async function commitStep() {
     const v = validateNumberInput(el.stepInput, 0.01, 2.0);
     if (v === null) {
@@ -150,21 +139,6 @@
     if (v !== settings.step) {
       settings.step = v;
       await storage.set({ step: v });
-    }
-  }
-
-  async function commitTarget() {
-    const v = validateTargetInput(el.targetInput);
-    if (v === null) {
-      el.targetInput.classList.add('invalid');
-      el.targetInput.value = settings.toggleTargetSpeed;
-      setTimeout(() => el.targetInput.classList.remove('invalid'), 1000);
-      return;
-    }
-    el.targetInput.classList.remove('invalid');
-    if (v !== settings.toggleTargetSpeed) {
-      settings.toggleTargetSpeed = v;
-      await storage.set({ toggleTargetSpeed: v });
     }
   }
 
@@ -303,8 +277,6 @@
 
     el.stepInput.addEventListener('change', commitStep);
     el.stepInput.addEventListener('blur', commitStep);
-    el.targetInput.addEventListener('change', commitTarget);
-    el.targetInput.addEventListener('blur', commitTarget);
 
     for (const action of ['down', 'up', 'toggle']) {
       el.keyButtons[action].addEventListener('click', () => startRebind(action));
@@ -317,13 +289,6 @@
   async function init() {
     applyI18n();
     settings = await storage.getAll();
-    if (actions.isTargetForbidden(settings.toggleTargetSpeed)) {
-      console.warn(
-        '[MNVS popup] toggleTargetSpeed is in the forbidden zone [0.9, 1.1]. ' +
-          'Please update it to a value outside this range.',
-        settings.toggleTargetSpeed
-      );
-    }
     await resolveCurrentHost();
     render();
     bindEvents();

@@ -5,7 +5,7 @@
 
   const DEFAULTS = Object.freeze({
     lastSpeed: 1.0,
-    step: 0.1,
+    step: 0.25,
     toggleTargetSpeed: 2.0,
     keyBindings: Object.freeze({ down: 'KeyS', up: 'KeyD', toggle: 'KeyR' }),
     excludedDomains: Object.freeze(['meet.google.com', 'hangouts.google.com']),
@@ -16,7 +16,11 @@
   const VALIDATORS = {
     lastSpeed: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
     step: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
-    toggleTargetSpeed: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
+    toggleTargetSpeed: (v) =>
+      typeof v === 'number' &&
+      Number.isFinite(v) &&
+      v > 0 &&
+      !ns.actions.isTargetForbidden(v),
     keyBindings: (v) => {
       if (!v || typeof v !== 'object') return false;
       return ['down', 'up', 'toggle'].every(
@@ -54,6 +58,10 @@
     const result = {};
     for (const key of KNOWN_KEYS) {
       result[key] = stored[key] !== undefined ? stored[key] : cloneDefault(key);
+    }
+    // Self-heal: UIから編集不可になったtoggleTargetSpeedが禁止ゾーンに残っていた場合は既定値へ差し替える
+    if (ns.actions.isTargetForbidden(result.toggleTargetSpeed)) {
+      result.toggleTargetSpeed = DEFAULTS.toggleTargetSpeed;
     }
     return result;
   }

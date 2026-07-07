@@ -11,9 +11,6 @@
   "labelStep": {
     "message": "ステップ値"
   },
-  "labelTargetSpeed": {
-    "message": "指定速度"
-  },
   "sectionSettings": {
     "message": "設定"
   },

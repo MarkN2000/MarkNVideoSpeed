@@ -54,7 +54,6 @@ Click the extension icon in the toolbar to open.
 - **Current speed**: Shown in real time (also reflects changes made from other tabs)
 - **Three buttons**: `-` / Toggle / `+` for when the keyboard isn't handy
 - **Step**: Increment/decrement amount for `+` / `-` (`0.01` – `2.0`)
-- **Target speed**: The other end of the toggle (`0.1` – `16.0`, excluding the forbidden zone described below)
 - **Rebind shortcuts**: Click a key button → press the new key → saved
   - Only **A–Z and 0–9** are accepted. Keys with modifiers (Ctrl / Alt / Shift / Meta) and symbols are rejected
   - A key already assigned to another action is rejected
@@ -73,9 +72,9 @@ When Up / Down / Toggle changes the playback rate, the new speed (e.g. `1.50×`)
 
 ## Target speed behavior
 
-When you press Up / Down, not only `current` but also `target` (the toggle destination) is **overwritten with the same value**. This way, "the speed you dial in while tweaking becomes the toggle target."
+Pressing `R` toggles playback between `1.0x` and an internal **target speed** (the toggle destination). The target is not user-configurable in the popup — instead, it automatically follows whatever speed you settle on via Up / Down: whenever Up / Down changes `current`, `target` is **overwritten with the same value**.
 
-However, `target` values in the range `0.9` – `1.1` (inclusive) cannot be stored — a toggle within that range would be imperceptible. When Up / Down produces a new `current` in this range, **the write to `target` is skipped** and the previous value is kept.
+The only exception is the range `0.9` – `1.1` (inclusive): a toggle within that range would be imperceptible, so `target` is never allowed to land there. When Up / Down produces a new `current` in this range, **the write to `target` is skipped** and the previous value is kept.
 
 ### Examples
 
