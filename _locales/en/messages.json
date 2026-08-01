@@ -85,6 +85,6 @@
     "message": "Could not fetch"
   },
   "hintReload": {
-    "message": "Reload the page after changing"
+    "message": "Changes apply immediately"
   }
 }

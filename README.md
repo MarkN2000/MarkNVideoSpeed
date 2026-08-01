@@ -59,7 +59,7 @@ Click the extension icon in the toolbar to open.
   - A key already assigned to another action is rejected
   - Press `Esc` or move focus away from the button to cancel
 - **Reset to defaults**: Restore all three shortcuts at once (`S` / `D` / `R`)
-- **Current site**: Add or remove the current domain to/from the exclusion list (reload the page for the change to take effect)
+- **Current site**: Add or remove the current domain to/from the exclusion list; the change applies immediately to open pages
 
 ### On-screen speed display (HUD)
 
@@ -96,7 +96,7 @@ Sites where the extension should not run can be managed as a list.
 - **Defaults**: `meet.google.com`, `hangouts.google.com` (to avoid colliding with video-conferencing controls)
 - **Add/remove**: One click from the "Current site" section of the popup
 - **Matching**: **Exact match** against `location.hostname` (subdomains are treated separately)
-- **Effect**: Reload the page after changing the list for it to take effect
+- **Effect**: Changes take effect immediately on open pages
 
 ## Scope and limitations
 

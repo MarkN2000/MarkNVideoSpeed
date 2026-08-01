@@ -34,8 +34,6 @@
       if (!hasMedia()) return;
       const action = matchAction(event.code, getBindings());
       if (!action) return;
-      event.preventDefault();
-      event.stopPropagation();
       onAction(action);
     }
 
