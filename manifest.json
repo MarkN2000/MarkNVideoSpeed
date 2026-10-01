@@ -34,6 +34,12 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "file:///*"],
+      "exclude_matches": [
+        "*://*.challenges.cloudflare.com/*",
+        "*://*.google.com/recaptcha/*",
+        "*://*.recaptcha.net/recaptcha/*",
+        "*://*.hcaptcha.com/*"
+      ],
       "js": [
         "src/lib/storage.js",
         "src/lib/actions.js",

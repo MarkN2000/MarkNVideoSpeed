@@ -1,5 +1,6 @@
 module.exports = {
   ignoreFiles: [
+    'tests/**',
     'agent/**',
     'agent',
     'assets/icon.clip',

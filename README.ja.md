@@ -65,6 +65,8 @@ HTML5 `<video>` / `<audio>` の再生速度をキーボードショートカッ�
 
 Up / Down / Toggle のいずれかで再生速度が変わると、画面中央に大きく現在の速度（例: `1.50×`）が約 300ms 表示されます。
 
+HUD の DOM は、そのフレームで初めてキー操作により速度が変わるときに作成し、以後は再利用します。起動時、保存速度の自動適用、ポップアップや別タブからの速度同期では作成しません。サイトを除外すると削除します。
+
 - Shadow DOM で実装されているため、サイトの CSS の影響を受けません
 - `z-index: 2147483647`（最大値）で常に最前面
 - フルスクリーン再生中も表示される（`fullscreenchange` で親要素を追従）
@@ -98,6 +100,14 @@ YouTube 等のサイトは広告終了 / 画質変更 / シーク時に `playbac
 - **追加/解除**: ポップアップの「現在のサイト」セクションからワンクリック
 - **判定方法**: `location.hostname` との **完全一致**（サブドメインは別扱い）
 - **反映タイミング**: 変更は開いているページにもすぐに反映
+
+認証用 URL はユーザーの除外設定とは別に、`manifest.json` の `exclude_matches` でコンテンツスクリプトの注入を禁止します。
+
+- **Cloudflare**: `challenges.cloudflare.com` とそのサブドメイン
+- **reCAPTCHA**: `google.com` と `recaptcha.net` およびそれぞれのサブドメインの `/recaptcha/` 配下
+- **hCaptcha**: `hcaptcha.com` とそのサブドメイン
+
+認証フレームを埋め込む親ページや通常の動画フレームは動作対象です。対象は上記の URL に限られ、すべてのボット認証への対応を保証するものではありません。
 
 ## 動作範囲と制限
 
@@ -145,6 +155,7 @@ MarkNVideoSpeed/
 - **popup**: `<script>` タグ直書きで同じ lib を再利用。
 - **純粋関数 / 副作用の分離**: `actions.js` / `domainFilter.js` は完全に純粋、`storage.js` / `speedApplier.js` / `mediaRegistry.js` / `hud.js` が副作用の境界。
 - **i18n**: Chrome の標準 i18n を使用（`_locales/{en,ja}/messages.json`）。manifest の `name` / `description` は `__MSG_*__` プレースホルダ、popup の文字列は `data-i18n` / `data-i18n-title` 属性から `chrome.i18n.getMessage()` で差し替え。新しい言語を足す場合は `_locales/<lang>/messages.json` を追加するだけ。
+- **動作確認**: `node tests/content.test.cjs` で HUD の遅延作成、動的メディアの検出、速度同期、除外・再開を確認できます（外部ライブラリ不要）。
 
 ## リリース手順（メンテナ向け）
 

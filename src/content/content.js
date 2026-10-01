@@ -24,7 +24,6 @@
     registry = ns.mediaRegistry.createRegistry(() => settings.lastSpeed);
     registry.start();
 
-    hud = ns.hud.createHUD();
     handler = ns.keyHandler.createHandler({
       getBindings: () => settings.keyBindings,
       hasMedia: () => registry.getAll().length > 0,
@@ -40,7 +39,7 @@
     }
     handler.stop();
     registry.stop();
-    hud.destroy();
+    hud?.destroy();
     handler = null;
     registry = null;
     hud = null;
@@ -61,6 +60,7 @@
     Object.assign(settings, patch);
     if ('lastSpeed' in patch) {
       ns.speedApplier.applyTo(registry.getAll(), patch.lastSpeed);
+      if (!hud) hud = ns.hud.createHUD();
       hud.show(patch.lastSpeed);
     }
     ns.storage.set(patch).catch((err) => {

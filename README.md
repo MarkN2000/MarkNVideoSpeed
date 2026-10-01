@@ -65,6 +65,8 @@ Click the extension icon in the toolbar to open.
 
 When Up / Down / Toggle changes the playback rate, the new speed (e.g. `1.50×`) is shown in large text at the center of the screen for about 300ms.
 
+The HUD DOM is created only when a keyboard shortcut first changes the speed in that frame, then reused. Startup, automatic application of the saved speed, and speed updates from the popup or other tabs do not create it. Excluding the site removes it.
+
 - Rendered inside a Shadow DOM, so site CSS cannot interfere
 - Uses `z-index: 2147483647` (maximum) to stay on top of everything
 - Also visible during fullscreen playback (the HUD follows the fullscreen element via `fullscreenchange`)
@@ -97,6 +99,14 @@ Sites where the extension should not run can be managed as a list.
 - **Add/remove**: One click from the "Current site" section of the popup
 - **Matching**: **Exact match** against `location.hostname` (subdomains are treated separately)
 - **Effect**: Changes take effect immediately on open pages
+
+Authentication URLs are excluded independently of the user's domain settings: `exclude_matches` in `manifest.json` prevents content scripts from being injected.
+
+- **Cloudflare**: `challenges.cloudflare.com` and its subdomains
+- **reCAPTCHA**: `/recaptcha/` paths on `google.com`, `recaptcha.net`, and their subdomains
+- **hCaptcha**: `hcaptcha.com` and its subdomains
+
+Parent pages embedding authentication frames and ordinary video frames remain supported. These exclusions cover only the URLs above and do not guarantee compatibility with every bot verification system.
 
 ## Scope and limitations
 
@@ -144,6 +154,7 @@ MarkNVideoSpeed/
 - **Popup**: Reuses the same lib via direct `<script>` tags.
 - **Pure / side-effectful separation**: `actions.js` and `domainFilter.js` are fully pure; `storage.js`, `speedApplier.js`, `mediaRegistry.js`, and `hud.js` are the side-effect boundary.
 - **i18n**: Uses Chrome's standard i18n (`_locales/{en,ja}/messages.json`). The manifest uses `__MSG_*__` placeholders for `name` / `description`; popup strings are swapped in at runtime from `data-i18n` / `data-i18n-title` attributes via `chrome.i18n.getMessage()`. To add a language, drop in `_locales/<lang>/messages.json`.
+- **Verification**: Run `node tests/content.test.cjs` to check deferred HUD creation, dynamic media discovery, speed synchronization, and exclusion/resumption (no external libraries required).
 
 ## Release procedure (for maintainers)
 
